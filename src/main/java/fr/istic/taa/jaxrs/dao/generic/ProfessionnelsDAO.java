@@ -1,9 +1,7 @@
 package fr.istic.taa.jaxrs.dao.generic;
 
-import doctolib.Professionnels;
+import fr.istic.taa.jaxrs.domain.Professionnels;
 
 public class ProfessionnelsDAO extends AbstractJpaDao<Long, Professionnels>{
-    public ProfessionnelsDAO() {
-        super(Professionnels.class);
-    }
+    public ProfessionnelsDAO() { super(); }
 }

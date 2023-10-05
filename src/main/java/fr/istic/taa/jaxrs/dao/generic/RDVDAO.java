@@ -1,9 +1,9 @@
 package fr.istic.taa.jaxrs.dao.generic;
 
-import doctolib.RDV;
+import fr.istic.taa.jaxrs.domain.RDV;
 
 public class RDVDAO extends AbstractJpaDao<Long, RDV>{
     public RDVDAO() {
-        super(RDV.class);
+        super();
     }
 }

@@ -1,20 +1,18 @@
 package fr.istic.taa.jaxrs.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serializable;
 
 @Entity
+@XmlRootElement(name = "Professionnels")
 public class Professionnels extends User implements Serializable {
 
-    @Id
-    @GeneratedValue
     private Long id;
 
-    public Professionnels() {
-    }
+    public Professionnels() {}
 
     public Professionnels(String name) {
         super(name);
@@ -24,6 +22,7 @@ public class Professionnels extends User implements Serializable {
         this.id = id;
     }
 
+    @XmlElement(name = "id")
     public Long getId() {
         return id;
     }
