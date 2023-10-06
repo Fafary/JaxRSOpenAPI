@@ -39,7 +39,6 @@ public class TestApplication extends Application {
         clazzes.add(ClientResource.class);
         clazzes.add(ProfessionnelResource.class);
         clazzes.add(RDVResource.class);
-        clazzes.add(PetResource.class);
         clazzes.add(AcceptHeaderOpenApiResource.class);
 
         return clazzes;

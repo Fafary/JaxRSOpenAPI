@@ -5,5 +5,6 @@ import fr.istic.taa.jaxrs.domain.User;
 public class UserDAO extends AbstractJpaDao<Long, User>{
     public UserDAO() {
         super();
+        setClazz(User.class);
     }
 }
