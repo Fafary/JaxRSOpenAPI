@@ -1,3 +1,5 @@
+TP TAA fait par Alxandre CHAPLAIS et Tilio EBOR
+
 ## JaxRS + openAPI
 
 1. Import this project in your IDE, 
