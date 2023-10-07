@@ -1,4 +1,4 @@
-TP TAA fait par Alxandre CHAPLAIS et Tilio EBOR
+TP TAA sur JaxRS fait par Alexandre CHAPLAIS et Tilio EBOR
 
 ## JaxRS + openAPI
 
