@@ -10,37 +10,28 @@ import java.io.Serializable;
 @Entity
 @XmlRootElement(name = "RDV")
 public class RDV implements Serializable {
-
     private Long id;
-
     private String date;
-
     @Column(name="Pro name")
-    private Professionnels professionnel;
-
-    private Clients client;
-
+    private Professionnel professionnel;
+    private Client client;
     private String sujet;
 
-    public RDV(String date, Clients client, Professionnels professionnel, String sujet) {
+    public RDV() {}
+
+    public RDV(String date, Client client, Professionnel professionnel, String sujet) {
         this.date = date;
         this.client = client;
         this.professionnel = professionnel;
         this.sujet = sujet;
     }
 
-    public RDV() {}
-
     @Id
     @GeneratedValue
     @XmlElement(name = "id")
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     @XmlElement(name = "date")
     public String getDate() { return date; }
@@ -55,23 +46,15 @@ public class RDV implements Serializable {
     @ManyToOne
     @XmlElement(name = "professionnel")
     @XmlTransient
-    public Professionnels getProfessionnel() {
-        return professionnel;
-    }
+    public Professionnel getProfessionnel() { return professionnel; }
 
-    public void setProfessionnel(Professionnels professionnel) {
-        this.professionnel = professionnel;
-    }
+    public void setProfessionnel(Professionnel professionnel) { this.professionnel = professionnel; }
 
     @ManyToOne
     @XmlElement(name = "client")
     @XmlTransient
-    public Clients getClient() {
-        return client;
-    }
+    public Client getClient() { return client; }
 
-    public void setClient(Clients client) {
-        this.client = client;
-    }
+    public void setClient(Client client) { this.client = client; }
 
 }

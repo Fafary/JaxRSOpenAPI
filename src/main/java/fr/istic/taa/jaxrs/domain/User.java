@@ -7,7 +7,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "stakeholder")
+@DiscriminatorValue("user")
 @XmlRootElement(name = "User")
 public class User implements Serializable {
     @Id
@@ -23,20 +25,13 @@ public class User implements Serializable {
     }
 
     @XmlElement(name = "id")
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     @XmlElement(name = "name")
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
+
 }

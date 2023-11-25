@@ -10,14 +10,12 @@ import java.util.logging.Logger;
  *
  */
 public class RestServer {
-
     private static final Logger logger = Logger.getLogger(RestServer.class.getName());
 
     public static void main( String[] args ) {
-
         UndertowJaxrsServer ut = new UndertowJaxrsServer();
 
-        TestApplication ta = new TestApplication();
+        RestApplication ta = new RestApplication();
 
         ut.deploy(ta);
 
@@ -29,4 +27,5 @@ public class RestServer {
 
         logger.info("JAX-RS based micro-service running!");
     }
+
 }

@@ -1,26 +1,35 @@
 package fr.istic.taa.jaxrs.rest;
 
-import fr.istic.taa.jaxrs.dao.generic.ClientsDAO;
-import fr.istic.taa.jaxrs.domain.Clients;
+import fr.istic.taa.jaxrs.dao.generic.ClientDAO;
+import fr.istic.taa.jaxrs.dao.generic.RDVDAO;
+import fr.istic.taa.jaxrs.domain.Client;
+import fr.istic.taa.jaxrs.domain.RDV;
+import fr.istic.taa.jaxrs.dto.ClientDTO;
+import fr.istic.taa.jaxrs.mapstruct.ClientMapper;
+import fr.istic.taa.jaxrs.mapstruct.ClientMapperImpl;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Path("clients")
+@Path("/clients")
 @Produces({"application/json", "application/xml"})
 public class ClientResource {
-    ClientsDAO dao = new ClientsDAO();
+    ClientDAO dao = new ClientDAO();
+    RDVDAO rdvdao = new RDVDAO();
+
+    private final ClientMapper MAPPER = new ClientMapperImpl();
 
     @GET
     @Path("/{clientId}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("application/json")
     public Response getClientById(@PathParam("clientId") long clientId) {
-        Clients client = dao.findOne(clientId);
+        Client client = dao.findOne(clientId);
+        ClientDTO clientDTO = MAPPER.clientToClientDTO(client);
 
         if (client != null) {
-            return Response.ok(client).build();
+            return Response.ok(clientDTO).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -28,26 +37,55 @@ public class ClientResource {
 
     @GET
     @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("application/json")
     public Response getClients() {
-        List<Clients> clients = dao.findAll();
-        return Response.ok(clients).build();
+        List<Client> clients = dao.findAll();
+        List<ClientDTO> result = new ArrayList<>();
+
+        clients.forEach(client -> result.add(MAPPER.clientToClientDTO(client)));
+
+        return Response.ok(result).build();
+    }
+
+    @GET
+    @Path("/{clientId}/rdvs")
+    @Produces("application/json")
+    public Response getClientRDVs(@PathParam("clientId") long clientId) {
+        List<RDV> RDVs = dao.getRDVs(dao.findOne(clientId));
+
+        return Doctolib.getRDVs(RDVs);
+    }
+
+    @PUT
+    @Path("/add")
+    @Consumes("application/json")
+    public Response addClient(ClientDTO clientDTO) {
+        dao.save(MAPPER.clientDTOToClient(clientDTO));
+
+        return Response.ok().entity("SUCCESS").build();
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response addClient(Clients client) {
-        boolean success = addClientToService(client);
+    @Path("/delete/{clientId}")
+    @Consumes("application/json")
+    public Response deleteClient(@PathParam("clientId") long clientId) {
+        List<RDV> RDVs = dao.getRDVs(dao.findOne(clientId));
+        RDVs.forEach(RDV -> rdvdao.delete(RDV));
 
-        if (success) {
-            return Response.status(Response.Status.CREATED).entity("Client ajouté avec succès").build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Échec de l'ajout du client").build();
-        }
+        dao.deleteById(clientId);
+
+        return Response.ok().entity("SUCCESS").build();
     }
 
-    private boolean addClientToService(Clients client) {
+    @POST
+    @Path("/update/{clientId}")
+    @Consumes("application/json")
+    public Response updateClient(@PathParam("clientId") long clientId, String name) {
+        Client client = dao.findOne(clientId);
+        client.setName(name);
         dao.update(client);
-        return false;
+
+        return Response.ok().entity("SUCCESS").build();
     }
+
 }

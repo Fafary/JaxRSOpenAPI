@@ -1,39 +1,91 @@
 package fr.istic.taa.jaxrs.rest;
 
-import fr.istic.taa.jaxrs.dao.generic.ProfessionnelsDAO;
-import fr.istic.taa.jaxrs.domain.Professionnels;
-import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import fr.istic.taa.jaxrs.dao.generic.ProfessionnelDAO;
+import fr.istic.taa.jaxrs.dao.generic.RDVDAO;
+import fr.istic.taa.jaxrs.domain.Professionnel;
+import fr.istic.taa.jaxrs.domain.RDV;
+import fr.istic.taa.jaxrs.dto.ProfessionnelDTO;
+import fr.istic.taa.jaxrs.mapstruct.ProfessionnelMapper;
+import fr.istic.taa.jaxrs.mapstruct.ProfessionnelMapperImpl;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("professionnels")
 @Produces({"application/json", "application/xml"})
 public class ProfessionnelResource {
+    ProfessionnelDAO dao = new ProfessionnelDAO();
+    RDVDAO rdvdao = new RDVDAO();
 
-    ProfessionnelsDAO dao = new ProfessionnelsDAO();
+    private final ProfessionnelMapper MAPPER = new ProfessionnelMapperImpl();
 
     @GET
-    @Path("/{professionnelsId}")
-    public Professionnels getProfessionnelsById(@PathParam("professionnelsId") Long professionnelsId)  {
-        return dao.findOne(professionnelsId);
+    @Path("/{professionnelId}")
+    @Produces("application/json")
+    public Response getProfessionnelsById(@PathParam("professionnelId") long professionnelsId)  {
+        Professionnel professionnel = dao.findOne(professionnelsId);
+        ProfessionnelDTO professionnelDTO = MAPPER.professionnelToProfessionnelDTO(professionnel);
+
+        if (professionnel != null) {
+            return Response.ok(professionnelDTO).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @GET
     @Path("/")
-    public Professionnels getProfessionnels(Long professionnelsId)  {
-        return new Professionnels();
+    @Produces("application/json")
+    public Response getProfessionnels()  {
+        List<Professionnel> professionnels = dao.findAll();
+        List<ProfessionnelDTO> result = new ArrayList<>();
+
+        professionnels.forEach(professionnel -> result.add(MAPPER.professionnelToProfessionnelDTO(professionnel)));
+
+        return Response.ok(result).build();
     }
 
+    @GET
+    @Path("/{professionnelId}/rdvs")
+    @Produces("application/json")
+    public Response getProfessionnelRDVs(@PathParam("professionnelId") long professionnelId) {
+        List<RDV> RDVs = dao.getRDVs(dao.findOne(professionnelId));
 
-    @POST
-    @Consumes("application/json")
-    public Response addProfessionnels(
-            @Parameter(description = "Professionnels object that needs to be added to the store", required = true) Professionnels professionnels) {
+        return Doctolib.getRDVs(RDVs);
+    }
+
+    @PUT
+    @Path("/add")
+    @Consumes({"application/json"})
+    public Response addProfessionnel(ProfessionnelDTO professionnelDTO) {
+        dao.save(MAPPER.professionnelDTOToProfessionnel(professionnelDTO));
+
         return Response.ok().entity("SUCCESS").build();
     }
+
+    @POST
+    @Path("/delete/{professionnelId}")
+    @Consumes("application/json")
+    public Response deleteProfessionnel(@PathParam("professionnelId") long professionnelId) {
+        List<RDV> RDVs = dao.getRDVs(dao.findOne(professionnelId));
+        RDVs.forEach(RDV -> rdvdao.delete(RDV));
+
+        dao.deleteById(professionnelId);
+
+        return Response.ok().entity("SUCCESS").build();
+    }
+
+    @POST
+    @Path("/update/{professionnelId}")
+    @Consumes("application/json")
+    public Response updateProfessionnel(@PathParam("professionnelId") long professionnelId, String name) {
+        Professionnel professionnel = dao.findOne(professionnelId);
+        professionnel.setName(name);
+        dao.update(professionnel);
+
+        return Response.ok().entity("SUCCESS").build();
+    }
+
 }

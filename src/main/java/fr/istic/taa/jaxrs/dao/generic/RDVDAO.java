@@ -7,4 +7,5 @@ public class RDVDAO extends AbstractJpaDao<Long, RDV>{
         super();
         setClazz(RDV.class);
     }
+
 }

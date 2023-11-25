@@ -26,22 +26,22 @@ import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
 @ApplicationPath("/")
-public class TestApplication extends Application {
-	
+public class RestApplication extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
 
-        final Set<Class<?>> clazzes = new HashSet<Class<?>>();
+        final Set<Class<?>> resources = new HashSet<Class<?>>();
 
-        clazzes.add(OpenApiResource.class);
-        clazzes.add(UserResource.class);
-        clazzes.add(ClientResource.class);
-        clazzes.add(ProfessionnelResource.class);
-        clazzes.add(RDVResource.class);
-        clazzes.add(AcceptHeaderOpenApiResource.class);
+        resources.add(OpenApiResource.class);
+        resources.add(UserResource.class);
+        resources.add(ClientResource.class);
+        resources.add(ProfessionnelResource.class);
+        resources.add(RDVResource.class);
+        resources.add(AcceptHeaderOpenApiResource.class);
+        resources.add(SwaggerResource.class);
 
-        return clazzes;
+        return resources;
     }
 
 }

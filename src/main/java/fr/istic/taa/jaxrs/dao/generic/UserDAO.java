@@ -7,4 +7,5 @@ public class UserDAO extends AbstractJpaDao<Long, User>{
         super();
         setClazz(User.class);
     }
+
 }
