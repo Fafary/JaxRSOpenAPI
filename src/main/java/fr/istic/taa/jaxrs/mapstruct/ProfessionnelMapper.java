@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface ProfessionnelMapper {
+    // Instance du mapper générée par MapStruct
     ProfessionnelMapper MAPPER = Mappers.getMapper(ProfessionnelMapper.class);
 
     ProfessionnelDTO professionnelToProfessionnelDTO(Professionnel professionnel);

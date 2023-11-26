@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface RDVMapper {
+    // Instance du mapper générée par MapStruct
     RDVMapper MAPPER = Mappers.getMapper(RDVMapper.class);
 
     RDVDTO rdvToRdvDTO(RDV rdv);

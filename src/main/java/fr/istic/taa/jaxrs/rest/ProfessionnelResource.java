@@ -42,6 +42,7 @@ public class ProfessionnelResource {
         List<Professionnel> professionnels = dao.findAll();
         List<ProfessionnelDTO> result = new ArrayList<>();
 
+        // Convertir la liste de professionnels en une liste de DTOs
         professionnels.forEach(professionnel -> result.add(MAPPER.professionnelToProfessionnelDTO(professionnel)));
 
         return Response.ok(result).build();
@@ -70,6 +71,8 @@ public class ProfessionnelResource {
     @Consumes("application/json")
     public Response deleteProfessionnel(@PathParam("professionnelId") long professionnelId) {
         List<RDV> RDVs = dao.getRDVs(dao.findOne(professionnelId));
+
+        // Supprimer les RDVs associés au client
         RDVs.forEach(RDV -> rdvdao.delete(RDV));
 
         dao.deleteById(professionnelId);

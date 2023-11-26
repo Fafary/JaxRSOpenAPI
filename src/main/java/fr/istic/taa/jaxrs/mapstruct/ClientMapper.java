@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface ClientMapper {
+    // Instance du mapper générée par MapStruct
     ClientMapper MAPPER = Mappers.getMapper(ClientMapper.class);
 
     ClientDTO clientToClientDTO(Client client);

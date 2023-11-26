@@ -42,6 +42,7 @@ public class UserResource {
         List<User> users = dao.findAll();
         List<UserDTO> result = new ArrayList<>();
 
+        // Convertir la liste de users en une liste de DTOs
         users.forEach(user -> result.add(MAPPER.userToUserDTO(user)));
 
         return Response.ok(result).build();

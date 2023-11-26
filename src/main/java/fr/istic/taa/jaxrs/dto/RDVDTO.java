@@ -4,6 +4,7 @@ import fr.istic.taa.jaxrs.domain.Client;
 import fr.istic.taa.jaxrs.domain.Professionnel;
 import lombok.Data;
 
+// Annotation Lombok pour générer automatiquement les méthodes getter, setter, toString, etc.
 @Data
 public class RDVDTO {
     private Long id;

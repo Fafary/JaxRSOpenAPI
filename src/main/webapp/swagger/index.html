@@ -15,5 +15,12 @@
     <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
     <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script src="./swagger-initializer.js" charset="UTF-8"> </script>
+    <script>
+      // Build a system
+      const ui = SwaggerUIBundle({
+        url: "http://localhost:8080/openapi.json",
+        dom_id: '#swagger-ui',
+      });
+    </script>
   </body>
 </html>

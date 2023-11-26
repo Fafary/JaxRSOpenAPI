@@ -42,6 +42,7 @@ public class ClientResource {
         List<Client> clients = dao.findAll();
         List<ClientDTO> result = new ArrayList<>();
 
+        // Convertir la liste de clients en une liste de DTOs
         clients.forEach(client -> result.add(MAPPER.clientToClientDTO(client)));
 
         return Response.ok(result).build();
@@ -70,6 +71,8 @@ public class ClientResource {
     @Consumes("application/json")
     public Response deleteClient(@PathParam("clientId") long clientId) {
         List<RDV> RDVs = dao.getRDVs(dao.findOne(clientId));
+
+        // Supprimer les RDVs associés au client
         RDVs.forEach(RDV -> rdvdao.delete(RDV));
 
         dao.deleteById(clientId);

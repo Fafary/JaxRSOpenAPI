@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface UserMapper {
+    // Instance du mapper générée par MapStruct
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 
     UserDTO userToUserDTO(User user);

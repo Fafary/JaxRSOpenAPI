@@ -17,6 +17,7 @@ public class RDV implements Serializable {
     private Client client;
     private String sujet;
 
+    // Constructeur par défaut nécessaire pour JPA
     public RDV() {}
 
     public RDV(String date, Client client, Professionnel professionnel, String sujet) {
@@ -43,6 +44,7 @@ public class RDV implements Serializable {
 
     public void setSujet(String sujet) { this.sujet = sujet; }
 
+    // Relation Many-to-One avec la classe Professionnel, annotée avec XML pour la sérialisation
     @ManyToOne
     @XmlElement(name = "professionnel")
     @XmlTransient
@@ -50,6 +52,7 @@ public class RDV implements Serializable {
 
     public void setProfessionnel(Professionnel professionnel) { this.professionnel = professionnel; }
 
+    // Relation Many-to-One avec la classe Client, annotée avec XML pour la sérialisation
     @ManyToOne
     @XmlElement(name = "client")
     @XmlTransient

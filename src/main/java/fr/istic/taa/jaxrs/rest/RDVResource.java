@@ -41,6 +41,7 @@ public class RDVResource {
         List<RDV> rdvs = dao.findAll();
         List<RDVDTO> result = new ArrayList<>();
 
+        // Convertir la liste de users en une liste de DTOs
         rdvs.forEach(rdv -> result.add(MAPPER.rdvToRdvDTO(rdv)));
 
         return Response.ok(result).build();
